@@ -10,6 +10,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.mailmuncher.http.reference.BootstrapCssResourceReference;
+import org.mailmuncher.http.reference.BootstrapJavascriptResourceReference;
 import org.mailmuncher.http.reference.JqueryJavascriptResourceReference;
 
 public abstract class BasePage extends WebPage {
@@ -36,6 +37,6 @@ public abstract class BasePage extends WebPage {
 
 		response.render(CssHeaderItem.forReference(new BootstrapCssResourceReference()));
 		response.render(JavaScriptHeaderItem.forReference(new JqueryJavascriptResourceReference()));
-		response.render(JavaScriptHeaderItem.forReference(new BootstrapCssResourceReference()));
+		response.render(JavaScriptHeaderItem.forReference(new BootstrapJavascriptResourceReference()));
 	}
 }
