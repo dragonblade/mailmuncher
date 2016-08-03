@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" th:fragment="layout">
+<head>
+    <title>Mail Muncher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            margin-bottom: 0;
+        }
+
+        #menu {
+            padding-left: 0;
+            padding-right: 0;
+            border-right: 1px solid #ddd;
+        }
+
+        #menu .list-group {
+            height: calc(100% - 51px);
+            margin-bottom: 0;
+            overflow-y: scroll;
+        }
+
+        #menu .list-group-item {
+            border-radius: 0;
+            border-width: 1px 0 1px 0;
+        }
+
+        #menu .list-group-item:first-child {
+            border-width: 0;
+        }
+
+        #menu h5 {
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
+        #content {
+            height: calc(100% - 51px);
+            padding-top: 20px;
+            overflow-y: scroll;
+        }
+
+        iframe {
+            width: 100%;
+            height: 700px;
+            overflow: scroll;
+            border: 0;
+        }
+    </style>
+    <script src="/static/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/static/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse" aria-expanded="false">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                Mail Muncher
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <p class="navbar-text" th:text="${version}"></p>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-3" id="menu">
+            <div class="list-group">
+                <a class="list-group-item" th:classappend="${mail} == ${current} ? active : ''"
+                   th:href="@{/{uuid}(uuid=${mail.id})}" th:each="mail : ${mailbox}">
+                    <h5 th:if="${mail.subject} == null"><em>Empty subject</em></h5>
+                    <h5 th:text="${mail.subject}" th:if="${mail.subject} != null"></h5>
+                    to:&nbsp;<span th:text="${mail.to}"></span>
+                </a>
+            </div>
+            <script>$('#menu .list-group').scrollTop($('#menu .active').position().top - 100);</script>
+        </div>
+        <div class="col-xs-9" id="content" th:include="this :: content"></div>
+    </div>
+</div>
+</body>
+</html>

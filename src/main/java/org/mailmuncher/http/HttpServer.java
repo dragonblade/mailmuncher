@@ -1,11 +1,10 @@
 package org.mailmuncher.http;
 
-import org.apache.wicket.protocol.http.ContextParamWebApplicationFactory;
-import org.apache.wicket.protocol.http.WicketFilter;
-import org.apache.wicket.protocol.http.WicketServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 public class HttpServer {
 	private final int port;
@@ -15,17 +14,15 @@ public class HttpServer {
 	}
 
 	public void start() {
-		Server server = new Server(this.port);
+		Server server = new Server(port);
 
-		ServletContextHandler sch = new ServletContextHandler(ServletContextHandler.SESSIONS);
-		ServletHolder sh = new ServletHolder(WicketServlet.class);
-		sh.setInitParameter(ContextParamWebApplicationFactory.APP_CLASS_PARAM, WicketApplication.class.getName());
-		sh.setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
+		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+		context.setConfigLocation("org.mailmuncher.http");
+		context.register(Config.class);
 
-		sh.setInitParameter("wicket.configuration", "deployment");
-
-		sch.addServlet(sh, "/*");
-		server.setHandler(sch);
+		ServletContextHandler contextHandler = new ServletContextHandler();
+		contextHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/*");
+		server.setHandler(contextHandler);
 
 		try {
 			server.start();
@@ -33,4 +30,5 @@ public class HttpServer {
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -1,0 +1,94 @@
+<html xmlns:th="http://thymeleaf.org" th:include="base :: layout">
+<body>
+<div th:fragment="content">
+    <div class="row">
+        <div class="col-sm-3">
+            <b>
+                Subject
+            </b>
+        </div>
+        <div class="col-sm-9">
+            <span th:if="${current.subject} == null"><em>Empty subject</em></span>
+            <span th:if="${current.subject} != null" th:text="${current.subject}"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <b>
+                From
+            </b>
+        </div>
+        <div class="col-sm-9" th:text="${current.from}"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <b>
+                To
+            </b>
+        </div>
+        <div class="col-sm-9" th:text="${current.to}"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <b>
+                Received at
+            </b>
+        </div>
+        <div class="col-sm-9" th:text="${current.received}"></div>
+    </div>
+
+    <div class="row" th:if="${headers} != null">
+        <div class="col-sm-3">
+            <b>
+                All headers
+            </b>
+        </div>
+        <div class="col-sm-9">
+            <pre th:text="${headers}"></pre>
+        </div>
+    </div>
+
+    <div class="row" th:if="${current.body} != null">
+        <div class="col-sm-3">
+            <b>
+                Plaintext body
+            </b>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-default">
+                <div class="panel-body" th:utext="${plainEscaped}"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" th:if="${current.bodyHtml} != null">
+        <div class="col-sm-3">
+            <b>
+                Escaped HTML body
+            </b>
+        </div>
+        <div class="col-sm-9">
+            <pre th:text="${current.bodyHtml}"></pre>
+        </div>
+    </div>
+
+    <div class="row" th:if="${current.bodyHtml} != null">
+        <div class="col-sm-3">
+            <b>
+                Framed HTML
+            </b>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <iframe th:src="@{/{uuid}/view(uuid=${current.id})}"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

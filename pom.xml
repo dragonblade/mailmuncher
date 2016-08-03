@@ -6,7 +6,7 @@
 
     <groupId>org.mailmucher</groupId>
     <artifactId>mailmuncher</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mail Muncher</name>
@@ -20,8 +20,8 @@
         <project.mainClass>org.mailmuncher.MailMuncher</project.mainClass>
 
         <!-- Dependencies -->
-        <wicket.version>7.1.0</wicket.version>
-        <wicket-webjars.version>0.5.3</wicket-webjars.version>
+        <spring.version>4.3.2.RELEASE</spring.version>
+        <thymeleaf.version>3.0.1.RELEASE</thymeleaf.version>
         <bootstrap.version>3.3.5</bootstrap.version>
         <jetty.version>9.3.4.v20151007</jetty.version>
         <slf4j.version>1.7.12</slf4j.version>
@@ -34,15 +34,27 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-core</artifactId>
-            <version>${wicket.version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.agilecoders.wicket.webjars</groupId>
-            <artifactId>wicket-webjars</artifactId>
-            <version>${wicket-webjars.version}</version>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+            <version>${thymeleaf.version}</version>
         </dependency>
 
         <dependency>
@@ -72,6 +84,16 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.subethamail</groupId>
@@ -81,22 +103,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -134,5 +140,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
