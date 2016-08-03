@@ -1,5 +1,12 @@
 package org.mailmuncher;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.mailmuncher.http.HttpServer;
 import org.mailmuncher.smtp.SmtpServer;
 
@@ -16,14 +23,79 @@ import java.util.Date;
 import java.util.Properties;
 
 public class MailMuncher {
-	public static void main(String[] args) {
-		SmtpServer smtp = new SmtpServer(2525);
+	public static void main(String[] args) throws ParseException {
+		int smtpPort = 2525;
+		int httpPort = 2580;
+
+		CommandLineParser parser = new DefaultParser();
+		CommandLine cmd = null;
+		try {
+			cmd = parser.parse(buildOptions(), args);
+		} catch (ParseException e) {
+			System.err.println(e.getMessage());
+		}
+
+		if (cmd == null || cmd.hasOption("help")) {
+			new HelpFormatter().printHelp("ant", buildOptions(), true);
+			return;
+		}
+
+		if (cmd.hasOption("smtpPort")) {
+			String port = cmd.getOptionValue("smtpPort");
+			try {
+				smtpPort = Integer.parseInt(port);
+			} catch (NumberFormatException e) {
+				System.err.println("Invalid SMTP port number: " + port);
+				return;
+			}
+		}
+		if (cmd.hasOption("httpPort")) {
+			String port = cmd.getOptionValue("httpPort");
+			try {
+				httpPort = Integer.parseInt(port);
+			} catch (NumberFormatException e) {
+				System.err.println("Invalid HTTP port number: " + port);
+				return;
+			}
+		}
+
+
+		SmtpServer smtp = new SmtpServer(smtpPort);
 		smtp.start();
 
-		HttpServer http = new HttpServer(2580);
+		HttpServer http = new HttpServer(httpPort);
 		http.start();
 
-		addTestMails(2525);
+		if (cmd.hasOption("test")) {
+			addTestMails(2525);
+		}
+	}
+
+	private static Options buildOptions() {
+		Options options = new Options();
+		options.addOption(Option
+				.builder("help")
+				.desc("Display this help")
+				.build());
+		options.addOption(Option
+				.builder("smtpPort")
+				.hasArg()
+				.argName("port")
+				.type(Integer.class)
+				.desc("Port to run the SMTP server on")
+				.build());
+		options.addOption(Option
+				.builder("httpPort")
+				.hasArg()
+				.argName("port")
+				.type(Integer.class)
+				.desc("Port to run the HTTP server on")
+				.build());
+		options.addOption(Option
+				.builder("test")
+				.desc("Generate and send some sample mails to the server, for testing purposes")
+				.build());
+		return options;
 	}
 
 	private static void addTestMails(int port) {
@@ -35,7 +107,7 @@ public class MailMuncher {
 		Session session = Session.getInstance(properties);
 
 		try {
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 10; i++) {
 				sendTestMail(session,
 						"from@example.com",
 						"to@example.com",

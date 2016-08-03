@@ -29,7 +29,7 @@ public class Config extends WebMvcConfigurerAdapter {
 		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
 		templateResolver.setPrefix("classpath:/templates/");
 		templateResolver.setSuffix(".html");
-		templateResolver.setTemplateMode("HTML5");
+		templateResolver.setTemplateMode("HTML");
 
 		return templateResolver;
 	}

@@ -18,7 +18,6 @@ public class Controller {
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("mailbox", Mailbox.getInstance().getMailbox());
-		model.addAttribute("version", getClass().getPackage().getImplementationVersion());
 		return "index";
 	}
 
@@ -52,7 +51,6 @@ public class Controller {
 		model.addAttribute("headers", headers);
 		model.addAttribute("plainEscaped", plainEscaped);
 		model.addAttribute("mailbox", Mailbox.getInstance().getMailbox());
-		model.addAttribute("version", getClass().getPackage().getImplementationVersion());
 		return "mail";
 	}
 
