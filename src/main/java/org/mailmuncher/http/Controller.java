@@ -1,7 +1,7 @@
 package org.mailmuncher.http;
 
 import org.mailmuncher.model.Mail;
-import org.mailmuncher.model.MailBox;
+import org.mailmuncher.model.Mailbox;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class Controller {
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String index(Model model) {
-		model.addAttribute("mailbox", MailBox.getInstance().getMailBox());
+		model.addAttribute("mailbox", Mailbox.getInstance().getMailbox());
 		model.addAttribute("version", getClass().getPackage().getImplementationVersion());
 		return "index";
 	}
@@ -26,7 +26,7 @@ public class Controller {
 	public String mail(@PathVariable String uuid, Model model) {
 		Mail mail;
 		try {
-			mail = MailBox.getInstance().getMail(UUID.fromString(uuid));
+			mail = Mailbox.getInstance().getMail(UUID.fromString(uuid));
 		} catch (IllegalArgumentException e) {
 			return "redirect:/";
 		}
@@ -51,7 +51,7 @@ public class Controller {
 		model.addAttribute("current", mail);
 		model.addAttribute("headers", headers);
 		model.addAttribute("plainEscaped", plainEscaped);
-		model.addAttribute("mailbox", MailBox.getInstance().getMailBox());
+		model.addAttribute("mailbox", Mailbox.getInstance().getMailbox());
 		model.addAttribute("version", getClass().getPackage().getImplementationVersion());
 		return "mail";
 	}
@@ -60,7 +60,7 @@ public class Controller {
 	public String html(@PathVariable String uuid, Model model) {
 		Mail mail;
 		try {
-			mail = MailBox.getInstance().getMail(UUID.fromString(uuid));
+			mail = Mailbox.getInstance().getMail(UUID.fromString(uuid));
 		} catch (IllegalArgumentException e) {
 			return "redirect:/";
 		}

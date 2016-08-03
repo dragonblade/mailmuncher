@@ -5,32 +5,32 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class MailBox {
-	private static MailBox instance;
+public class Mailbox {
+	private static Mailbox instance;
 
-	private Set<Mail> mailBox = new TreeSet<>();
+	private Set<Mail> mailbox = new TreeSet<>();
 
-	protected MailBox() {
+	protected Mailbox() {
 	}
 
-	public static MailBox getInstance() {
+	public static Mailbox getInstance() {
 		if (instance == null)
-			instance = new MailBox();
+			instance = new Mailbox();
 		return instance;
 	}
 
 	public void addMail(Mail mail) {
 		if (mail.getId() == null)
 			mail.setId(UUID.randomUUID());
-		mailBox.add(mail);
+		mailbox.add(mail);
 	}
 
 	public Mail getMail(UUID uuid) {
-		Optional<Mail> mailOptional = mailBox.stream().filter(mail -> mail.getId().equals(uuid)).findFirst();
+		Optional<Mail> mailOptional = mailbox.stream().filter(mail -> mail.getId().equals(uuid)).findFirst();
 		return mailOptional.isPresent() ? mailOptional.get() : null;
 	}
 
-	public Set<Mail> getMailBox() {
-		return mailBox;
+	public Set<Mail> getMailbox() {
+		return mailbox;
 	}
 }

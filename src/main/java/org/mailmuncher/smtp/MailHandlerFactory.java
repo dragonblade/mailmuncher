@@ -1,7 +1,7 @@
 package org.mailmuncher.smtp;
 
 import org.mailmuncher.model.Mail;
-import org.mailmuncher.model.MailBox;
+import org.mailmuncher.model.Mailbox;
 import org.subethamail.smtp.MessageContext;
 import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.MessageHandlerFactory;
@@ -90,7 +90,7 @@ public class MailHandlerFactory implements MessageHandlerFactory {
 		public void done() {
 			mail.setReceived(LocalDateTime.now());
 
-			MailBox.getInstance().addMail(mail);
+			Mailbox.getInstance().addMail(mail);
 		}
 
 		/**
