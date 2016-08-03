@@ -6,7 +6,7 @@
 
     <groupId>org.mailmucher</groupId>
     <artifactId>mailmuncher</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
 
     <name>Mail Muncher</name>
